@@ -1,0 +1,76 @@
+<odoo>
+  <data>
+
+    <!-- Adding to res.partner for Vendors -->
+    <record model="ir.ui.view" id="ga_freeship.vendor_form">
+      <field name="name">Vendor</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+         <!-- Adding new tab to hold Vendor Free Ship Rule info -->
+        <xpath expr="//page[@name='sales_purchases']" position="after">
+          <page name="free_ship_rules" string="Vendor Free Ship Rules">
+            <group>
+              <group name="ship_rule" string="Shipping Rule">
+                <field name="free_ship_rule"/>
+              </group>
+              <group name="ship_rule_values" string="Shipping Values">
+                <field name="m_cost"/>
+                <field name="m_qty"/>
+                <field name="m_wght"/> 
+                <field name="mx_line_cnt"/>
+              </group>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- Adding to Purchase Order(RFQ) for Free Ship Info -->
+    <record model="ir.ui.view" id="ga_freeship.po_form">
+      <field name="name">RFQ</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="model">purchase.order</field>
+      <field name="arch" type="xml">
+         <!-- Show Free Ship Status in Header on RFQ -->
+        <xpath expr="//field[@name='partner_ref']" position="after">
+          <field name="free_ship_status"/>
+        </xpath>
+         <!-- Show details for Free Ship Status on new tab on RFQ -->
+        <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
+          <page name="free_ship_rules" string="Free Ship Details">
+            <group>
+              <group name="ship_rule" string="Shipping Rule">
+                <field name="ship_rule"/>
+                <field name="m_cost"/>
+                <field name="m_qty"/>
+                <field name="m_wght"/>
+                <field name="mx_line_cnt"/>
+              </group>
+              <group name="ship_rule_values" string="Shipping Values">
+                <field name="amount_total"/>
+                <field name="tot_qty"/>
+                <field name="tot_wght"/> 
+                <field name="tot_line_cnt"/>
+              </group>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- Adding fields to RFQ Tree View -->
+    <record model="ir.ui.view" id="ga_freeship.po_tree">
+      <field name="name">RFQ Tree</field>
+      <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+      <field name="model">purchase.order</field>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='partner_id']" position="after">
+          <!-- <field name="ship_rule"/> -->
+          <field name="free_ship_status"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
