@@ -26,6 +26,22 @@
       </field>
     </record>
 
+    <!-- Adding to Search View for Free Shipping -->
+    <record id="view_free_ship_search_form_inherit" model="ir.ui.view">
+       <field name="name">free.ship.search.form.inherit</field>
+       <field name="model">purchase.order</field>
+       <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+       <field name="arch" type="xml">
+            <!-- Adding after existing RFQ Search -->
+            <xpath expr="//filter[@name='draft']" position="after">
+              <separator/>
+              <filter string="RFQs Ready To Ship" name="ship_ready" domain="[('free_ship_status', 'not like', 'Not'), ('state', 'in', ('draft', 'sent', 'to approve'))]"/>
+              <filter string="RFQs Not Free Ship" name="not_ship_ready" domain="[('free_ship_status', 'like', 'Not'), ('state', 'in', ('draft', 'sent', 'to approve'))]"/>
+              <separator/>
+            </xpath>
+       </field>
+    </record>
+
     <!-- Adding to Purchase Order(RFQ) for Free Ship Info -->
     <record model="ir.ui.view" id="ga_freeship.po_form">
       <field name="name">RFQ</field>
